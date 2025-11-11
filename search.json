@@ -1,0 +1,352 @@
+[
+  {
+    "objectID": "TSA_Commands_Reference.html",
+    "href": "TSA_Commands_Reference.html",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "",
+    "text": "This document provides a comprehensive reference of all R commands used in Time Series Analysis practicals, organized by topic with brief descriptions and example usage."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#loading-built-in-datasets",
+    "href": "TSA_Commands_Reference.html#loading-built-in-datasets",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "2.1 Loading Built-in Datasets",
+    "text": "2.1 Loading Built-in Datasets\n# Load a built-in time series dataset\ndata(\"nottem\")              # Average temperatures at Nottingham Castle\ndata(\"AirPassengers\")       # Monthly airline passenger numbers\ndata(\"EuStockMarkets\")      # European stock market indices\nDescription: The data() function loads built-in datasets from R or installed packages into the workspace."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#basic-time-series-information",
+    "href": "TSA_Commands_Reference.html#basic-time-series-information",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "2.2 Basic Time Series Information",
+    "text": "2.2 Basic Time Series Information\n# Get start year/month of time series\nstart(nottem)               # Returns: c(1920, 1) for Jan 1920\n\n# Get end year/month of time series\nend(nottem)                 # Returns: c(1939, 12) for Dec 1939\n\n# Get frequency (observations per year)\nfrequency(nottem)           # Returns: 12 (monthly data)\n\n# Get total number of observations\nlength(nottem)              # Returns: 240\n\n# Get time index\ntime(nottem)                # Returns decimal years (1920.000, 1920.083, ...)\nDescription: These functions extract metadata about time series objects, essential for understanding data structure."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#summary-statistics",
+    "href": "TSA_Commands_Reference.html#summary-statistics",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "2.3 Summary Statistics",
+    "text": "2.3 Summary Statistics\n# Calculate mean\nmean(nottem)                # Average value across all observations\n\n# Calculate standard deviation\nsd(nottem)                  # Measure of variability\n\n# Find minimum value\nmin(nottem)                 # Lowest temperature recorded\n\n# Find maximum value\nmax(nottem)                 # Highest temperature recorded\n\n# Get range (min and max)\nrange(nottem)               # Returns: c(min, max)\n\n# Summary statistics\nsummary(nottem)             # Min, Q1, Median, Mean, Q3, Max\nDescription: Basic statistical measures to understand central tendency and spread of the data."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#ts-function",
+    "href": "TSA_Commands_Reference.html#ts-function",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "3.1 ts() Function",
+    "text": "3.1 ts() Function\n# Create annual time series (frequency = 1)\nrainfall_ts &lt;- ts(data_vector, \n                  start = 1990, \n                  end = 2020, \n                  frequency = 1)\n\n# Create monthly time series (frequency = 12)\nmonthly_ts &lt;- ts(data_vector, \n                 start = c(2016, 1),  # January 2016\n                 frequency = 12)\n\n# Create quarterly time series (frequency = 4)\nquarterly_ts &lt;- ts(data_vector, \n                   start = c(2020, 1),  # Q1 2020\n                   frequency = 4)\nDescription: The ts() function converts a numeric vector into a time series object with specified temporal structure.\nParameters: - data: Numeric vector of observations - start: Starting time (year or c(year, period)) - end: Ending time (optional if start and frequency specified) - frequency: Number of observations per year (1=annual, 4=quarterly, 12=monthly)"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#basic-plotting",
+    "href": "TSA_Commands_Reference.html#basic-plotting",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "4.1 Basic Plotting",
+    "text": "4.1 Basic Plotting\n# Simple time series plot\nplot(nottem)\n\n# Customized plot with parameters\nplot(nottem,\n     main = \"Average Air Temperatures\",     # Title\n     xlab = \"Year\",                          # X-axis label\n     ylab = \"Temperature (°F)\",              # Y-axis label\n     col = \"blue\",                           # Line color\n     lwd = 2,                                # Line width\n     type = \"l\")                             # Line type (\"l\"=line, \"p\"=points, \"o\"=both)\n\n# Add grid lines\ngrid()\n\n# Add horizontal line\nabline(h = mean(nottem), col = \"red\", lty = 2)  # lty = line type (2=dashed)\n\n# Add vertical line\nabline(v = 1930, col = \"green\", lty = 3)\n\n# Add regression line\nabline(lm(nottem ~ time(nottem)), col = \"red\")\nDescription: plot() creates visualizations; abline() adds reference lines; grid() adds gridlines."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#multiple-plots",
+    "href": "TSA_Commands_Reference.html#multiple-plots",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "4.2 Multiple Plots",
+    "text": "4.2 Multiple Plots\n# Set up 2x1 plot layout\npar(mfrow = c(2, 1))\n\nplot(nottem)\nplot(AirPassengers)\n\n# Reset to single plot\npar(mfrow = c(1, 1))\n\n# Adjust margins: c(bottom, left, top, right)\npar(mar = c(4, 4, 3, 2))\nDescription: par() sets graphical parameters, including multi-panel layouts and margins."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#histograms",
+    "href": "TSA_Commands_Reference.html#histograms",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "4.3 Histograms",
+    "text": "4.3 Histograms\n# Basic histogram\nhist(nottem)\n\n# Customized histogram\nhist(residuals,\n     breaks = 20,                    # Number of bins\n     main = \"Histogram of Residuals\",\n     xlab = \"Residuals\",\n     col = \"lightblue\",\n     border = \"black\",\n     probability = TRUE)             # Density instead of frequency\nDescription: hist() creates frequency or density histograms for data distribution analysis."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#q-q-plots",
+    "href": "TSA_Commands_Reference.html#q-q-plots",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "4.4 Q-Q Plots",
+    "text": "4.4 Q-Q Plots\n# Normal Q-Q plot\nqqnorm(residuals, \n       main = \"Q-Q Plot\",\n       col = \"blue\", \n       pch = 19)        # Point character (19 = solid circle)\n\n# Add reference line\nqqline(residuals, col = \"red\", lwd = 2)\nDescription: qqnorm() creates quantile-quantile plots to assess normality; qqline() adds theoretical normal line."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#decompose-function",
+    "href": "TSA_Commands_Reference.html#decompose-function",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "5.1 decompose() Function",
+    "text": "5.1 decompose() Function\n# Additive decomposition (default)\nnottem_decomp &lt;- decompose(nottem, type = \"additive\")\n\n# Multiplicative decomposition\nair_decomp &lt;- decompose(AirPassengers, type = \"multiplicative\")\n\n# Plot decomposition\nplot(nottem_decomp)\nDescription: decompose() separates time series into trend, seasonal, and random components.\nTypes: - Additive: Y = Trend + Seasonal + Random (constant seasonal amplitude) - Multiplicative: Y = Trend × Seasonal × Random (proportional seasonal amplitude)"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#extracting-components",
+    "href": "TSA_Commands_Reference.html#extracting-components",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "5.2 Extracting Components",
+    "text": "5.2 Extracting Components\n# Extract individual components\ntrend &lt;- nottem_decomp$trend           # Trend component\nseasonal &lt;- nottem_decomp$seasonal     # Seasonal component\nrandom &lt;- nottem_decomp$random         # Random/irregular component\nobserved &lt;- nottem_decomp$x            # Original series\nDescription: Components can be extracted using $ operator for separate analysis."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#augmented-dickey-fuller-adf-test",
+    "href": "TSA_Commands_Reference.html#augmented-dickey-fuller-adf-test",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "6.1 Augmented Dickey-Fuller (ADF) Test",
+    "text": "6.1 Augmented Dickey-Fuller (ADF) Test\n# Load tseries package\nlibrary(tseries)\n\n# Perform ADF test\nadf_result &lt;- adf.test(nottem)\n\n# Access results\nadf_result$statistic          # Test statistic\nadf_result$p.value            # P-value\nadf_result$parameter          # Lag order\nDescription: Tests null hypothesis that series has unit root (non-stationary). - H₀: Series is non-stationary (has unit root) - H₁: Series is stationary - Reject H₀ if: p-value &lt; 0.05"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#kpss-test",
+    "href": "TSA_Commands_Reference.html#kpss-test",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "6.2 KPSS Test",
+    "text": "6.2 KPSS Test\n# Perform KPSS test\nkpss_result &lt;- kpss.test(nottem)\n\n# Access results\nkpss_result$statistic         # Test statistic\nkpss_result$p.value           # P-value\nDescription: Tests null hypothesis that series is stationary (opposite of ADF). - H₀: Series is stationary - H₁: Series is non-stationary - Reject H₀ if: p-value &lt; 0.05"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#phillips-perron-test",
+    "href": "TSA_Commands_Reference.html#phillips-perron-test",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "6.3 Phillips-Perron Test",
+    "text": "6.3 Phillips-Perron Test\n# Perform PP test\npp_result &lt;- PP.test(AirPassengers)\nDescription: Alternative unit root test, robust to heteroscedasticity and serial correlation."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#first-differencing",
+    "href": "TSA_Commands_Reference.html#first-differencing",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "7.1 First Differencing",
+    "text": "7.1 First Differencing\n# First difference: Y_t - Y_{t-1}\ndiff1 &lt;- diff(nottem, differences = 1)\n\n# Or simply\ndiff1 &lt;- diff(nottem)\nDescription: Removes linear trend by computing consecutive differences."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#seasonal-differencing",
+    "href": "TSA_Commands_Reference.html#seasonal-differencing",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "7.2 Seasonal Differencing",
+    "text": "7.2 Seasonal Differencing\n# Seasonal difference (lag = frequency)\nseasonal_diff &lt;- diff(nottem, lag = 12)\n\n# Combined: First + Seasonal differencing\ncombined_diff &lt;- diff(diff(nottem), lag = 12)\nDescription: Removes seasonal patterns by differencing at seasonal lag (e.g., 12 for monthly data)."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#log-transformation",
+    "href": "TSA_Commands_Reference.html#log-transformation",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "7.3 Log Transformation",
+    "text": "7.3 Log Transformation\n# Natural logarithm transformation\nlog_series &lt;- log(AirPassengers)\n\n# Difference of log (returns/growth rates)\nlog_diff &lt;- diff(log(AirPassengers))\nDescription: Stabilizes variance and converts multiplicative to additive relationships."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#acf-autocorrelation-function",
+    "href": "TSA_Commands_Reference.html#acf-autocorrelation-function",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "9.1 ACF (Autocorrelation Function)",
+    "text": "9.1 ACF (Autocorrelation Function)\n# Calculate and plot ACF\nacf_result &lt;- acf(nottem,\n                  lag.max = 40,      # Maximum lag to compute\n                  main = \"ACF Plot\",\n                  col = \"blue\",\n                  lwd = 2)\n\n# Access ACF values\nacf_values &lt;- acf_result$acf         # ACF coefficients\nDescription: Measures correlation between series and its lagged values. Used to identify MA order.\nInterpretation: - Cuts off sharply: Suggests MA(q) process - Decays gradually: Suggests AR component"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#pacf-partial-autocorrelation-function",
+    "href": "TSA_Commands_Reference.html#pacf-partial-autocorrelation-function",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "9.2 PACF (Partial Autocorrelation Function)",
+    "text": "9.2 PACF (Partial Autocorrelation Function)\n# Calculate and plot PACF\npacf_result &lt;- pacf(nottem,\n                    lag.max = 40,\n                    main = \"PACF Plot\",\n                    col = \"red\",\n                    lwd = 2)\n\n# Access PACF values\npacf_values &lt;- pacf_result$acf\nDescription: Measures correlation between series and its lagged values, controlling for intermediate lags. Used to identify AR order.\nInterpretation: - Cuts off sharply: Suggests AR(p) process - Decays gradually: Suggests MA component"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#arima-function",
+    "href": "TSA_Commands_Reference.html#arima-function",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "10.1 arima() Function",
+    "text": "10.1 arima() Function\n# Load forecast package\nlibrary(forecast)\n\n# Fit AR(1) model\nar1_model &lt;- arima(nottem, order = c(1, 0, 0))\n\n# Fit MA(1) model\nma1_model &lt;- arima(nottem, order = c(0, 0, 1))\n\n# Fit ARMA(1,1) model\narma11_model &lt;- arima(nottem, order = c(1, 0, 1))\n\n# Fit ARIMA(1,1,1) model with differencing\narima111_model &lt;- arima(nottem, order = c(1, 1, 1))\n\n# Fit Seasonal ARIMA\nsarima_model &lt;- arima(nottem, \n                      order = c(1, 0, 1),        # (p, d, q)\n                      seasonal = list(order = c(1, 1, 1),  # (P, D, Q)\n                                      period = 12))        # Seasonal period\nDescription: Fits ARIMA models with specified orders.\nParameters: - p: AR (autoregressive) order - d: Differencing order - q: MA (moving average) order - P: Seasonal AR order - D: Seasonal differencing order - Q: Seasonal MA order"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#auto.arima-function",
+    "href": "TSA_Commands_Reference.html#auto.arima-function",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "10.2 auto.arima() Function",
+    "text": "10.2 auto.arima() Function\n# Automatic model selection\nauto_model &lt;- auto.arima(nottem,\n                         seasonal = TRUE,       # Include seasonal component\n                         stepwise = FALSE,      # Exhaustive search\n                         approximation = FALSE, # Use exact likelihood\n                         trace = TRUE)          # Print search progress\nDescription: Automatically selects best ARIMA model using AIC/BIC criteria."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#model-coefficients",
+    "href": "TSA_Commands_Reference.html#model-coefficients",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "10.3 Model Coefficients",
+    "text": "10.3 Model Coefficients\n# Get model coefficients\ncoef(model)\n\n# Get coefficient standard errors\nsqrt(diag(vcov(model)))\n\n# Get variance-covariance matrix\nvcov(model)\n\n# Model summary\nsummary(model)\nDescription: Extract parameter estimates and uncertainty measures from fitted models."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#ets-function",
+    "href": "TSA_Commands_Reference.html#ets-function",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "11.1 ets() Function",
+    "text": "11.1 ets() Function\n# Automatic ETS model selection\nets_model &lt;- ets(nottem)\n\n# Specify model components\nets_model &lt;- ets(AirPassengers,\n                 model = \"MAM\")    # Multiplicative error, Additive trend, Multiplicative seasonal\n\n# ETS model types:\n# \"ZZZ\" = Automatic selection\n# \"ANN\" = Additive error, No trend, No seasonal\n# \"AAN\" = Additive error, Additive trend, No seasonal\n# \"AAA\" = Additive error, Additive trend, Additive seasonal\n# \"MAM\" = Multiplicative error, Additive trend, Multiplicative seasonal\nDescription: Fits exponential smoothing state space models (Error-Trend-Seasonal framework)."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#residual-analysis",
+    "href": "TSA_Commands_Reference.html#residual-analysis",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "12.1 Residual Analysis",
+    "text": "12.1 Residual Analysis\n# Extract residuals\nresiduals &lt;- residuals(model)\n\n# Standardized residuals\nstd_residuals &lt;- residuals / sqrt(model$sigma2)\n\n# Residual statistics\nmean(residuals)                 # Should be ~0\nsd(residuals)                   # Residual standard deviation\nDescription: Residuals should behave like white noise for adequate models."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#box-pierce-test",
+    "href": "TSA_Commands_Reference.html#box-pierce-test",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "12.2 Box-Pierce Test",
+    "text": "12.2 Box-Pierce Test\n# Box-Pierce test for autocorrelation\nbp_test &lt;- Box.test(residuals, \n                    lag = 20, \n                    type = \"Box-Pierce\")\n\nbp_test$p.value\nDescription: Tests null hypothesis that residuals are uncorrelated (white noise). - H₀: No autocorrelation - p-value &gt; 0.05: Fail to reject (good - residuals are white noise)"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#ljung-box-test",
+    "href": "TSA_Commands_Reference.html#ljung-box-test",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "12.3 Ljung-Box Test",
+    "text": "12.3 Ljung-Box Test\n# Ljung-Box test (more powerful than Box-Pierce)\nlb_test &lt;- Box.test(residuals, \n                    lag = 20, \n                    type = \"Ljung-Box\",\n                    fitdf = length(coef(model)))  # Degrees of freedom\n\nlb_test$statistic\nlb_test$p.value\nDescription: Tests for autocorrelation in residuals; preferred over Box-Pierce test."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#shapiro-wilk-normality-test",
+    "href": "TSA_Commands_Reference.html#shapiro-wilk-normality-test",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "12.4 Shapiro-Wilk Normality Test",
+    "text": "12.4 Shapiro-Wilk Normality Test\n# Test for normality of residuals\nshapiro_test &lt;- shapiro.test(residuals)\n\nshapiro_test$statistic          # W statistic\nshapiro_test$p.value            # P-value\nDescription: Tests null hypothesis that data comes from normal distribution. - H₀: Data is normally distributed - p-value &gt; 0.05: Fail to reject (residuals are normal)"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#jarque-bera-test",
+    "href": "TSA_Commands_Reference.html#jarque-bera-test",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "12.5 Jarque-Bera Test",
+    "text": "12.5 Jarque-Bera Test\n# Load tseries package\nlibrary(tseries)\n\n# Jarque-Bera test for normality\njb_test &lt;- jarque.bera.test(residuals)\nDescription: Alternative normality test based on skewness and kurtosis."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#variance-test",
+    "href": "TSA_Commands_Reference.html#variance-test",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "12.6 Variance Test",
+    "text": "12.6 Variance Test\n# F-test for equality of variances\nvar_test &lt;- var.test(residuals_1, residuals_2)\n\nvar_test$statistic              # F-statistic\nvar_test$p.value                # P-value\nDescription: Tests whether two groups have equal variance (homoscedasticity)."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#information-criteria",
+    "href": "TSA_Commands_Reference.html#information-criteria",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "13.1 Information Criteria",
+    "text": "13.1 Information Criteria\n# Akaike Information Criterion\nAIC(model)\n\n# Bayesian Information Criterion\nBIC(model)\n\n# Log-likelihood\nlogLik(model)\n\n# Number of parameters\nlength(coef(model))\n\n# Residual variance\nmodel$sigma2\nDescription: Lower AIC/BIC indicates better model fit with parsimony penalty.\nFormula: - AIC: -2 × log-likelihood + 2k (k = number of parameters) - BIC: -2 × log-likelihood + k × log(n) (n = sample size)"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#model-comparison",
+    "href": "TSA_Commands_Reference.html#model-comparison",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "13.2 Model Comparison",
+    "text": "13.2 Model Comparison\n# Compare multiple models\nmodels &lt;- list(\n  \"AR(1)\" = ar1_model,\n  \"MA(1)\" = ma1_model,\n  \"ARMA(1,1)\" = arma11_model\n)\n\n# Extract AIC for all models\nsapply(models, AIC)\n\n# Extract BIC for all models\nsapply(models, BIC)\n\n# Find best model\nbest_model &lt;- names(models)[which.min(sapply(models, AIC))]\nDescription: Systematic comparison of competing models using information criteria."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#forecast-function",
+    "href": "TSA_Commands_Reference.html#forecast-function",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "14.1 forecast() Function",
+    "text": "14.1 forecast() Function\n# Generate forecast\nforecast_result &lt;- forecast(model, h = 12)  # h = forecast horizon\n\n# Access forecast components\nforecast_result$mean            # Point forecasts\nforecast_result$lower           # Lower prediction intervals\nforecast_result$upper           # Upper prediction intervals\n\n# Specific confidence level\nforecast_result$lower[, \"80%\"]  # 80% lower bound\nforecast_result$upper[, \"95%\"]  # 95% upper bound\nDescription: Produces forecasts with prediction intervals from fitted models."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#plot-forecast",
+    "href": "TSA_Commands_Reference.html#plot-forecast",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "14.2 Plot Forecast",
+    "text": "14.2 Plot Forecast\n# Plot forecast with prediction intervals\nplot(forecast_result,\n     main = \"Forecast\",\n     xlab = \"Time\",\n     ylab = \"Value\",\n     col = \"blue\",\n     lwd = 2,\n     shadecols = c(\"lightblue\", \"lightgray\"))  # PI colors\nDescription: Visualizes historical data, forecasts, and uncertainty bands."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#skewness-and-kurtosis",
+    "href": "TSA_Commands_Reference.html#skewness-and-kurtosis",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "15.1 Skewness and Kurtosis",
+    "text": "15.1 Skewness and Kurtosis\n# Install moments package if needed\n# install.packages(\"moments\")\n\n# Load moments package (optional)\nif (requireNamespace(\"moments\", quietly = TRUE)) {\n  library(moments)\n  \n  # Calculate skewness\n  skewness(residuals)\n  \n  # Calculate kurtosis\n  kurtosis(residuals)\n}\nDescription: Measures distribution shape. - Skewness = 0: Symmetric - Kurtosis = 3: Normal distribution"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#linear-regression",
+    "href": "TSA_Commands_Reference.html#linear-regression",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "15.2 Linear Regression",
+    "text": "15.2 Linear Regression\n# Fit linear model\nlm_model &lt;- lm(y ~ x)\n\n# With time trend\ntrend_model &lt;- lm(series ~ time(series))\n\n# Get fitted values\nfitted(trend_model)\n\n# Get residuals\nresiduals(trend_model)\n\n# Model summary\nsummary(trend_model)\n\n# Extract coefficients\ncoef(trend_model)\nDescription: lm() fits linear regression models, useful for trend estimation."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#subsetting-time-series",
+    "href": "TSA_Commands_Reference.html#subsetting-time-series",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "16.1 Subsetting Time Series",
+    "text": "16.1 Subsetting Time Series\n# Extract specific time window\nwindow(nottem, start = c(1920, 1), end = c(1925, 12))\n\n# Extract by index\nnottem[1:12]                    # First 12 observations\n\n# Split into periods\nfirst_half &lt;- nottem[1:(length(nottem)/2)]\nsecond_half &lt;- nottem[(length(nottem)/2 + 1):length(nottem)]\nDescription: window() extracts time series subsets preserving temporal structure."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#combining-time-series",
+    "href": "TSA_Commands_Reference.html#combining-time-series",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "16.2 Combining Time Series",
+    "text": "16.2 Combining Time Series\n# Combine multiple time series\ncbind(series1, series2, series3)\n\n# Row-wise combination\nrbind(series1, series2)\nDescription: Combine time series objects into multivariate structures."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#printing",
+    "href": "TSA_Commands_Reference.html#printing",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "17.1 Printing",
+    "text": "17.1 Printing\n# Print with cat()\ncat(\"AIC:\", round(AIC(model), 2), \"\\n\")\n\n# Print formatted strings\nsprintf(\"The p-value is %.4f\", p_value)\n\n# Print separator lines\ncat(paste(rep(\"=\", 50), collapse = \"\"), \"\\n\")\ncat(paste(rep(\"-\", 50), collapse = \"\"), \"\\n\")\nDescription: cat() prints output; sprintf() formats strings; paste() concatenates."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#rounding",
+    "href": "TSA_Commands_Reference.html#rounding",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "17.2 Rounding",
+    "text": "17.2 Rounding\n# Round to n decimal places\nround(3.14159, 2)               # Returns: 3.14\n\n# Round multiple values\nround(c(1.234, 5.678), 1)       # Returns: c(1.2, 5.7)\nDescription: round() rounds numeric values to specified decimal places."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#tables-with-kable",
+    "href": "TSA_Commands_Reference.html#tables-with-kable",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "17.3 Tables with kable()",
+    "text": "17.3 Tables with kable()\n# Load knitr package\nlibrary(knitr)\n\n# Create formatted table\nkable(data_frame,\n      digits = 2,                           # Decimal places\n      caption = \"Model Comparison\",         # Table caption\n      col.names = c(\"Model\", \"AIC\", \"BIC\"), # Column names\n      align = c(\"l\", \"r\", \"r\"))             # Alignment (l=left, r=right, c=center)\nDescription: Creates formatted tables for Quarto/RMarkdown documents."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#loading-packages",
+    "href": "TSA_Commands_Reference.html#loading-packages",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "18.1 Loading Packages",
+    "text": "18.1 Loading Packages\n# Load required package\nlibrary(forecast)\n\n# Check if package is installed\nif (!requireNamespace(\"moments\", quietly = TRUE)) {\n  install.packages(\"moments\")\n}\n\n# Load with namespace check\nif (requireNamespace(\"moments\", quietly = TRUE)) {\n  library(moments)\n}\nDescription: library() loads packages; requireNamespace() checks availability."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#essential-packages",
+    "href": "TSA_Commands_Reference.html#essential-packages",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "18.2 Essential Packages",
+    "text": "18.2 Essential Packages\n# Time series analysis\nlibrary(tseries)        # Stationarity tests, GARCH models\nlibrary(forecast)       # ARIMA, ETS, forecasting\nlibrary(zoo)            # Rolling statistics, irregular time series\nlibrary(xts)            # Extended time series\n\n# Visualization\nlibrary(ggplot2)        # Advanced graphics\n\n# Diagnostics\nlibrary(lmtest)         # Linear model tests\n\n# Tables\nlibrary(knitr)          # kable() for tables\nDescription: Core packages for time series analysis in R."
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#check-stationarity",
+    "href": "TSA_Commands_Reference.html#check-stationarity",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "21.1 Check Stationarity",
+    "text": "21.1 Check Stationarity\n# Both tests should agree\nadf_test &lt;- adf.test(series)\nkpss_test &lt;- kpss.test(series)\n\nis_stationary &lt;- (adf_test$p.value &lt; 0.05) & (kpss_test$p.value &gt;= 0.05)"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#extract-significant-lags",
+    "href": "TSA_Commands_Reference.html#extract-significant-lags",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "21.2 Extract Significant Lags",
+    "text": "21.2 Extract Significant Lags\n# From ACF/PACF\nacf_result &lt;- acf(series, plot = FALSE)\nconf_level &lt;- qnorm(0.975) / sqrt(length(series))\nsignificant_lags &lt;- which(abs(acf_result$acf) &gt; conf_level)"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#model-adequacy-check",
+    "href": "TSA_Commands_Reference.html#model-adequacy-check",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "21.3 Model Adequacy Check",
+    "text": "21.3 Model Adequacy Check\n# Comprehensive diagnostic\nresiduals &lt;- residuals(model)\n\n# 1. White noise\nlb_test &lt;- Box.test(residuals, lag = 20, type = \"Ljung-Box\")\n\n# 2. Normality\nshapiro_test &lt;- shapiro.test(residuals)\n\n# 3. Constant variance\nplot(residuals)\nabline(h = 0, col = \"red\")\n\n# Model is adequate if:\n# - lb_test$p.value &gt; 0.05 (white noise)\n# - shapiro_test$p.value &gt; 0.05 (normal)\n# - residual plot shows constant variance"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#always-visualize-first",
+    "href": "TSA_Commands_Reference.html#always-visualize-first",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "22.1 1. Always Visualize First",
+    "text": "22.1 1. Always Visualize First\nplot(series)  # Look before you leap!"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#test-stationarity",
+    "href": "TSA_Commands_Reference.html#test-stationarity",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "22.2 2. Test Stationarity",
+    "text": "22.2 2. Test Stationarity\n# Use both tests for confirmation\nadf.test(series)\nkpss.test(series)"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#transform-if-needed",
+    "href": "TSA_Commands_Reference.html#transform-if-needed",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "22.3 3. Transform if Needed",
+    "text": "22.3 3. Transform if Needed\n# Log for variance stabilization\nlog(series)\n\n# Difference for stationarity\ndiff(series)\n\n# Both\ndiff(log(series))"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#check-residuals-thoroughly",
+    "href": "TSA_Commands_Reference.html#check-residuals-thoroughly",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "22.4 4. Check Residuals Thoroughly",
+    "text": "22.4 4. Check Residuals Thoroughly\n# Multiple diagnostic plots\npar(mfrow = c(2, 2))\nplot(residuals)\nhist(residuals)\nacf(residuals)\nqqnorm(residuals); qqline(residuals)\npar(mfrow = c(1, 1))"
+  },
+  {
+    "objectID": "TSA_Commands_Reference.html#compare-multiple-models",
+    "href": "TSA_Commands_Reference.html#compare-multiple-models",
+    "title": "Time Series Analysis - R Commands Reference",
+    "section": "22.5 5. Compare Multiple Models",
+    "text": "22.5 5. Compare Multiple Models\n# Never rely on a single model\nmodels &lt;- list(\n  arima(series, c(1,1,1)),\n  arima(series, c(2,1,1)),\n  auto.arima(series)\n)\nsapply(models, AIC)"
+  }
+]
